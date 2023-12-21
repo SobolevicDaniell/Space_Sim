@@ -11,6 +11,7 @@ public class StationAntetaRotation : MonoBehaviour
 
     void Update()
     {
-        gameObject.transform.Rotate(0,speed* Time.deltaTime,0);
+        //gameObject.transform.Rotate(0,speed* Time.deltaTime,0);
+        //gameObject.transform.Rotate(0,0,speed* Time.deltaTime);
     }
 }
