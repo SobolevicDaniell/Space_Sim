@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
-using Zenject;
 
 namespace Source.Scripts.Muvment
 {
@@ -9,7 +8,7 @@ namespace Source.Scripts.Muvment
     {
         public GameObject docingObject;
         
-        [Inject]
+        //[Inject]
         private void Construct(SouzMuvment souzMuvment)
         {
             docingObject = souzMuvment.gameObject;
