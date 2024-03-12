@@ -1,57 +1,59 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Leopotam.Ecs;
 using UnityEngine;
 using Voody.UniLeo;
 
-namespace Source.Scripts.Ecs
+namespace Ecs
 {
-    
-    class EcsGameStartup : MonoBehaviour
+    public class EcsGameStartup : MonoBehaviour
     {
-        EcsWorld _world;
-        EcsSystems _systems;
+        
+        private EcsWorld _world;
+        private EcsSystems _systems;
+        
+        [SerializeField]
+        private ObjectCreationSystem _objectCreationSystem;
 
-        void Init()
+
+        private void Start()
         {
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
+
             _systems.ConvertScene();
-                
-            AddInjections();
-            AddSystems();
-            AddOneFrames();
             
+            AddSystems();
+        
             _systems.Init();
+            _systems.Run();
         }
 
-        private void AddInjections()
+        private void Update()
         {
-            
+            _systems.Run();
         }
+
 
         private void AddSystems()
         {
-            
-        }
-
-        private void AddOneFrames()
-        {
-            
+            _systems
+                .Add(new InputSystem())
+                .Add(new CameraSystem())
+                .Add(new MovmentSystem())
+                .Add(new StabilizationSystem())
+                .Add(new ParticleSrabilizationSystem())
+                .Add(new WorldVectorSystem());
         }
         
-        private void Update()
-        {
-            _systems?.Run();
-        }
+        
 
-        void Destroy()
+        private void OnDestroy()
         {
-            if (_systems != null)
-            {
-                _systems.Destroy();
-                _systems = null;
-                _world.Destroy();
-                _world = null;
-            }
+            _systems?.Destroy();
+            _world?.Destroy();
         }
     }
 }
+
