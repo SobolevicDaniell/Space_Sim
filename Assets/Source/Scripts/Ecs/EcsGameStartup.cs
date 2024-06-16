@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Leopotam.Ecs;
 using UnityEngine;
 using Voody.UniLeo;
@@ -9,51 +8,79 @@ namespace Ecs
 {
     public class EcsGameStartup : MonoBehaviour
     {
-        
         private EcsWorld _world;
         private EcsSystems _systems;
-        
-        [SerializeField]
-        private ObjectCreationSystem _objectCreationSystem;
 
+        private void Awake()
+        {
+            // Debug.Log("Awake: Initializing EcsWorld");
+            _world = new EcsWorld();
+        }
 
         private void Start()
         {
-            _world = new EcsWorld();
+            // Debug.Log("Start: Initializing EcsSystems");
             _systems = new EcsSystems(_world);
-
             _systems.ConvertScene();
-            
             AddSystems();
-        
             _systems.Init();
-            _systems.Run();
         }
 
         private void Update()
         {
-            _systems.Run();
+            if (_systems != null)
+            {
+                // Debug.Log("Run");
+                _systems.Run();
+            }
         }
-
 
         private void AddSystems()
         {
+            // Debug.Log("Adding Systems");
             _systems
                 .Add(new InputSystem())
                 .Add(new CameraSystem())
-                .Add(new MovmentSystem())
+                .Add(new MovementSystem())
                 .Add(new StabilizationSystem())
                 .Add(new ParticleSrabilizationSystem())
-                .Add(new WorldVectorSystem());
+                .Add(new ControlSwitchSystem())
+                .Add(new ResourceSpendingSystem())
+                // .Add(new TransferSystem())
+                .Add(new UIObjectSystem())
+                .Add(new LazerSystem())
+                .Add(new AsteroidSpawnSystem())
+                .Add(new RestartSystem())
+                .Add(new DockingSystem())
+                .Add(new FuelProductionSystem())
+                ;
         }
-        
-        
+
+        public EcsWorld GetWorld()
+        {
+            return _world;
+        }
 
         private void OnDestroy()
         {
-            _systems?.Destroy();
-            _world?.Destroy();
+            if (_systems != null)
+            {
+                // Debug.Log("Destroying Systems");
+                _systems.Destroy();
+                _systems = null;
+            }
+
+            if (_world != null)
+            {
+                // Debug.Log("Destroying World");
+                _world.Destroy();
+                _world = null;
+            }
+        }
+
+        public EcsSystems GetSystems()
+        {
+            return _systems;
         }
     }
 }
-

@@ -15,6 +15,21 @@ EditorBuildSettings:
     path: Assets/Scenes/Options.unity
     guid: 0e6e61d0881b50840b0f2e333660e19c
   - enabled: 1
-    path: Assets/Scenes/Docking.unity
+    path: Assets/Scenes/Levels/Training.unity
+    guid: dd9da0c3d86a5f44d93adc65afb6e814
+  - enabled: 1
+    path: Assets/Scenes/Levels/Docking.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/Levels/Docking +.unity
+    guid: da293765a95b97147acbcb154364588e
+  - enabled: 0
+    path: Assets/Scenes/Levels/Redocking.unity
+    guid: c82385b57608e734e8709b6d232c9c7c
+  - enabled: 0
+    path: Assets/Scenes/Levels/Redocking +.unity
+    guid: 1a0adc738a2adca4285262ea558c5ee0
+  - enabled: 0
+    path: Assets/Scenes/Levels/FreeFly.unity
+    guid: 7284452bf2ce2524b9775fb67b7326c6
   m_configObjects: {}

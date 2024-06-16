@@ -1,56 +1,56 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Ecs;
 using UnityEngine;
+using Leopotam.Ecs;
 
 public class Docking : MonoBehaviour
 {
-    [SerializeField] private GameObject _gameObject;
+    private EcsEntity _soyuzEntity;
 
-    private GameObject _dock;
-    private bool col;
-    private bool isDock = false;
-    
-    private Rigidbody rb;
-    void Start()
-    {
-        rb = _gameObject.GetComponent<Rigidbody>();
-    }
+    // [SerializeField] private GameObject transferMenu;
 
-    void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.P) && col && !isDock)
+        var soyuzScript = FindObjectOfType<Soyuz>();
+        if (soyuzScript != null)
         {
-            // Debug.Log("Parking");
-            rb.isKinematic = true;
-            _gameObject.transform.SetParent(_dock.transform);
-            isDock = true;
+            _soyuzEntity = soyuzScript.GetSoyuzEntity();
+            // ref var dockingComponent = ref _soyuzEntity.Get<DockingComponent>();
+            // dockingComponent.transferMenu = transferMenu;
         }
-        else if (Input.GetKeyDown(KeyCode.P) && col && isDock)
+        else
         {
-            rb.isKinematic = false;
-            _gameObject.transform.SetParent(null);
-            isDock = false;
+            Debug.LogError("Soyuz script not found in the scene.");
+            return;
         }
     }
 
-    public void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Dock")
+        if (other.CompareTag("Dock"))
         {
-            Debug.Log("Collision");
-            col = true;
-            _dock = other.gameObject;
+            ref var dockingComponent = ref _soyuzEntity.Get<DockingComponent>();
+            ref var uiComponent = ref _soyuzEntity.Get<UIComponent>();
+            dockingComponent.gameObjectWithDock = other.gameObject;
+            dockingComponent.readyToInteract = true;
+            uiComponent.dockText.text = "Для стыковки нажмите P";
+            Debug.Log($"Trigger {other.gameObject.name}");
         }
     }
 
-    public void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Dock")
+        if (other.CompareTag("Dock"))
         {
-            // Debug.Log("Collision Off");
-            col = false;
-            _dock = null;
+            ref var uiComponent = ref _soyuzEntity.Get<UIComponent>();
+            ref var dockingComponent = ref _soyuzEntity.Get<DockingComponent>();
+            dockingComponent.gameObjectWithDock = null;
+            dockingComponent.readyToInteract = false;
+            uiComponent.dockText.text = "";
+            if (!dockingComponent.isDocked)  // Убедитесь, что мы не сбрасываем isDocked, если объект все еще стыкуется
+            {
+                // dockingComponent.transferMenu.SetActive(false);
+                Debug.Log("Un trigger");
+            }
         }
     }
 }

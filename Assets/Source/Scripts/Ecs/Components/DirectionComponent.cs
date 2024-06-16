@@ -12,6 +12,11 @@ namespace Ecs
         public float yaw;
 
         public bool isStabization;
-
+        public bool isLazerOn;
+        public bool isDocking;
+        
+        
+        public bool isSwitchingCamera;
+        public bool isSwitchingControl;
     }
 }

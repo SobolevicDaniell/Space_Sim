@@ -21,7 +21,5 @@ namespace Ecs
         public GameObject[] pitchF;
         public GameObject[] yawT;
         public GameObject[] yawF;
-        
-        
     }
 }

@@ -4,7 +4,7 @@ namespace Ecs
 {
     sealed class StabilizationSystem : IEcsRunSystem
     {
-        private readonly EcsFilter<MovableComponent, StabilizationComponent> stabilizationFilter = null;
+        private readonly EcsFilter<MovebleComponent, StabilizationComponent> stabilizationFilter = null;
         
         public void Run()
         {
@@ -20,7 +20,7 @@ namespace Ecs
                 
                 if (IsStabilization)
                 {
-                    chatracteRigidbody.drag = 0.8f;
+                    // chatracteRigidbody.drag = 0.8f;
                     chatracteRigidbody.angularDrag = 0.8f;
                     // foreach (var obGameObject in stabilizationObjectForward)
                     // {
@@ -29,7 +29,7 @@ namespace Ecs
                 }
                 else
                 {
-                    chatracteRigidbody.drag = 0f;
+                    // chatracteRigidbody.drag = 0f;
                     chatracteRigidbody.angularDrag = 0f;
                     // foreach (var obGameObject in stabilizationObjectForward)
                     // {
