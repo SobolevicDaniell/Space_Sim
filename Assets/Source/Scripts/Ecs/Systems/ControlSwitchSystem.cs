@@ -10,9 +10,7 @@ namespace Ecs
 
         public void Init()
         {
-            // Debug.Log(controlSwitchFilter.GetEntitiesCount());
 
-            // Ищем начального игрока, если он установлен
             for (int i = 0; i < controlSwitchFilter.GetEntitiesCount(); i++)
             {
                 ref var playerTagComponent = ref controlSwitchFilter.Get2(i);
@@ -35,13 +33,12 @@ namespace Ecs
             foreach (var i in controlSwitchFilter)
             {
                 ref var directionComponent = ref controlSwitchFilter.Get3(i);
-                // ref var dockingComponent = ref controlSwitchFilter.Get5(i);
 
                 if (directionComponent.isSwitchingControl)
                 {
                     SwitchControl();
                     directionComponent.isSwitchingControl = false;
-                    break; // Прекращаем итерацию после обнаружения переключения
+                    break;
                 }
             }
         }
@@ -53,7 +50,6 @@ namespace Ecs
                 return;
             }
 
-            // Отключаем текущую управляемую сущность
             ref var currentPlayerTagComponent = ref controlSwitchFilter.Get2(currentPlayerIndex);
             ref var currentCameraComponent = ref controlSwitchFilter.Get1(currentPlayerIndex);
             ref var currentUIComponent = ref controlSwitchFilter.Get4(currentPlayerIndex);
@@ -64,22 +60,15 @@ namespace Ecs
             ActivateStatMenu(ref currentUIComponent, false);
             
 
-            // Переход к следующей сущности
             currentPlayerIndex = (currentPlayerIndex + 1) % controlSwitchFilter.GetEntitiesCount();
 
-            // Включаем следующую сущность
             ref var nextPlayerTagComponent = ref controlSwitchFilter.Get2(currentPlayerIndex);
             ref var nextCameraComponent = ref controlSwitchFilter.Get1(currentPlayerIndex);
             ref var nextUIComponent = ref controlSwitchFilter.Get4(currentPlayerIndex);
 
             nextPlayerTagComponent.IsControlledByPlayer = true;
             ActivateCamera(ref nextCameraComponent, true);
-            
             ActivateStatMenu(ref nextUIComponent, true);
-            
-            
-            
-            
         }
 
         private void ActivateCamera(ref CameraComponent cameraComponent, bool isActive)
@@ -88,7 +77,7 @@ namespace Ecs
             {
                 for (int i = 0; i < cameraComponent.cameras.Length; i++)
                 {
-                    cameraComponent.cameras[i].SetActive(isActive && i == 0); // Включаем только первую камеру
+                    cameraComponent.cameras[i].SetActive(isActive && i == 0);
                 }
             }
         }

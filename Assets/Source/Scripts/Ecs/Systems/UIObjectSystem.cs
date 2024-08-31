@@ -70,7 +70,6 @@ namespace Ecs
                         uiComponent.stabText.text = "Стабилизатор Выкл";
                     }
                 }
-                // Debug.Log($"{i} Fuel: {resourceComponent.currentFuel}");
             }
         }
     }

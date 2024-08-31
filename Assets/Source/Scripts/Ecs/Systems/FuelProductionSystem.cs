@@ -22,20 +22,20 @@ namespace Ecs
                     if (resourceComponent.currentFuel < resourceComponent.maxFuel)
                     {
                         float materialsToConvert = Math.Min(resourceComponent.currentMaterials, fuelComponent.fuelProductionSpeed);
-                        materialsToConvert = Math.Min(materialsToConvert, resourceComponent.currentElectricity); // Только если электричества достаточно
-                        materialsToConvert = Math.Min(materialsToConvert, resourceComponent.maxFuel - resourceComponent.currentFuel); // Не конвертировать больше, чем максимальное значение топлива
+                        materialsToConvert = Math.Min(materialsToConvert, resourceComponent.currentElectricity);
+                        materialsToConvert = Math.Min(materialsToConvert, resourceComponent.maxFuel - resourceComponent.currentFuel);
                         resourceComponent.currentMaterials -= materialsToConvert * Time.deltaTime;
-                        resourceComponent.currentElectricity -= materialsToConvert  * Time.deltaTime; // Уменьшаем количество электричества на количество материалов, потраченных на производство топлива
+                        resourceComponent.currentElectricity -= materialsToConvert  * Time.deltaTime;
                         resourceComponent.currentFuel += materialsToConvert  * Time.deltaTime;
                     }
                     else
                     {
-                        fuelComponent.isProductionFuel = false; // Производство прекращается, если топлива больше максимального значения
+                        fuelComponent.isProductionFuel = false;
                     }
                 }
                 else
                 {
-                    fuelComponent.isProductionFuel = false; // Производство прекращается, если материалы или электричество заканчиваются
+                    fuelComponent.isProductionFuel = false;
                 }
             }
         }

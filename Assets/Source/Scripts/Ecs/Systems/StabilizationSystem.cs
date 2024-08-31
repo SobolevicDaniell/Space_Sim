@@ -20,21 +20,11 @@ namespace Ecs
                 
                 if (IsStabilization)
                 {
-                    // chatracteRigidbody.drag = 0.8f;
                     chatracteRigidbody.angularDrag = 0.8f;
-                    // foreach (var obGameObject in stabilizationObjectForward)
-                    // {
-                    //     obGameObject.gameObject.SetActive(true);
-                    // }
                 }
                 else
                 {
-                    // chatracteRigidbody.drag = 0f;
                     chatracteRigidbody.angularDrag = 0f;
-                    // foreach (var obGameObject in stabilizationObjectForward)
-                    // {
-                    //     obGameObject.gameObject.SetActive(false);
-                    // }
                 }
             }
         }

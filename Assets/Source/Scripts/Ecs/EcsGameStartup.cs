@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Leopotam.Ecs;
 using UnityEngine;
 using Voody.UniLeo;
@@ -13,13 +11,11 @@ namespace Ecs
 
         private void Awake()
         {
-            // Debug.Log("Awake: Initializing EcsWorld");
             _world = new EcsWorld();
         }
 
         private void Start()
         {
-            // Debug.Log("Start: Initializing EcsSystems");
             _systems = new EcsSystems(_world);
             _systems.ConvertScene();
             AddSystems();
@@ -30,14 +26,12 @@ namespace Ecs
         {
             if (_systems != null)
             {
-                // Debug.Log("Run");
                 _systems.Run();
             }
         }
 
         private void AddSystems()
         {
-            // Debug.Log("Adding Systems");
             _systems
                 .Add(new InputSystem())
                 .Add(new CameraSystem())
@@ -46,7 +40,6 @@ namespace Ecs
                 .Add(new ParticleSrabilizationSystem())
                 .Add(new ControlSwitchSystem())
                 .Add(new ResourceSpendingSystem())
-                // .Add(new TransferSystem())
                 .Add(new UIObjectSystem())
                 .Add(new LazerSystem())
                 .Add(new AsteroidSpawnSystem())
@@ -65,14 +58,12 @@ namespace Ecs
         {
             if (_systems != null)
             {
-                // Debug.Log("Destroying Systems");
                 _systems.Destroy();
                 _systems = null;
             }
 
             if (_world != null)
             {
-                // Debug.Log("Destroying World");
                 _world.Destroy();
                 _world = null;
             }

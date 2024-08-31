@@ -33,7 +33,6 @@ namespace Ecs
                 if (!playerTagComponent.IsControlledByPlayer) continue;
 
                 ref var directionComponent = ref inputFilter.Get2(i);
-                // ref var dockingComponent = ref inputFilter.Get4(i);
                 ref var direction = ref directionComponent.Direction;
 
                 direction.x = _moveX;
@@ -89,7 +88,6 @@ namespace Ecs
                     _isSwitchingControl = false;
                 }
                 directionComponent.isSwitchingControl = _isSwitchingControl;
-                // Debug.Log(directionComponent.isSwitchingControl);
 
                 if (Input.GetKeyDown(KeyCode.C))
                 {

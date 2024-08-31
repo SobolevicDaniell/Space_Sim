@@ -11,14 +11,10 @@ namespace Ecs
         {
             foreach (var i in movementFilter)
             {
-                // Логирование для проверки наличия компонентов
-                // Debug.Log($"Processing Entity {i}");
-
                 if (!movementFilter.GetEntity(i).Has<ModelComponent>() || 
                     !movementFilter.GetEntity(i).Has<MovebleComponent>() || 
                     !movementFilter.GetEntity(i).Has<DirectionComponent>())
                 {
-                    // Debug.Log($"Entity {i} is missing one or more components.");
                     continue;
                 }
                 
@@ -43,12 +39,10 @@ namespace Ecs
 
                     var rawDirection = (transform.right * direction.x) + (transform.forward * direction.z) + (transform.up * direction.y);
 
-                    // Debug.Log($"Entity {i} - Applying Force: {rawDirection * speed}");
 
                     chatracteRigidbody.AddForce(rawDirection * speed);
 
                     var torque = new Vector3(Rpitch, Ryaw, -Rroll * rotationRollSpeed) * rotationSpeed;
-                    // Debug.Log($"Entity {i} - Applying Torque: {torque}");
 
                     chatracteRigidbody.AddRelativeTorque(torque, ForceMode.Force);
                 }

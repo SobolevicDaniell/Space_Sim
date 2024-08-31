@@ -16,11 +16,6 @@ namespace Ecs
                 ref var directionComponent = ref resourceFilter.Get3(i);
                 ref var restartComponent = ref resourceFilter.Get4(i);
                 
-                // Debug.Log(resourceComponent.currentMaterials);
-                // Debug.Log($"Resource entity {i} {resourceComponent.currentFuel}");
-
-
-                // Генерация электричества (вне зависимости от состояния лазера)
                 resourceComponent.currentElectricity += resourceSpendingComponent.electricityGenerationRate * Time.deltaTime;
                 if (resourceComponent.currentElectricity > resourceComponent.maxElectricity)
                 {
@@ -37,7 +32,6 @@ namespace Ecs
                     resourceComponent.currentFuel = 0;
                 }
 
-                // Расход электричества лазером
                 if (directionComponent.isLazerOn)
                 {
                     if (resourceComponent.currentElectricity <= resourceComponent.minElectricityLazer)
@@ -61,7 +55,7 @@ namespace Ecs
                     resourceComponent.currentFuel -= resourceSpendingComponent.fuelSpending * Time.deltaTime;
                 }
 
-                if (resourceComponent.currentFuel <= 0/* && dockingComponent.isDocked == false*/)
+                if (resourceComponent.currentFuel <= 0)
                 {
                     restartComponent.isRestart = true;
                 }

@@ -22,7 +22,6 @@ namespace Ecs
                     bool isAsteroidOutOfRange = false;
                     float progress;
 
-                    // Автоматическое выключение лазера при недостатке электричества
                     if (resourceComponent.currentElectricity < resourceComponent.minElectricityLazer)
                     {
                         directionComponent.isLazerOn = false;
@@ -52,7 +51,6 @@ namespace Ecs
                                 if (hitEntity != EcsEntity.Null && hitEntity.Has<AsteroidComponent>())
                                 {
                                     float distanceToAsteroid = Vector3.Distance(rayOrigin, hit.point);
-                                    // Debug.Log($"Distance to Asteroid: {distanceToAsteroid}");
 
                                     if (distanceToAsteroid <= lazerComponent._maxLazerDistance)
                                     {
@@ -81,11 +79,6 @@ namespace Ecs
                                 }
                             }
                         }
-                        else
-                        {
-                            // Debug.Log("Laser did not hit any asteroid.");
-                        }
-
                         lazerComponent._lineRenderer.SetPosition(0, rayOrigin);
                         lazerComponent._lineRenderer.SetPosition(1, laserEndPosition);
                     }

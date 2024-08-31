@@ -27,7 +27,6 @@ namespace Ecs
                     asteroidComponent.miningProgress = Random.Range(spawnComponent.minMiningProgress, spawnComponent.maxMiningProgress);
                     asteroidComponent.miningProgressTimer = asteroidComponent.miningProgress;
 
-                    // Убедитесь, что EcsEntityReference добавляется
                     var entityReference = asteroidInstance.GetComponent<EcsEntityReference>();
                     if (entityReference == null)
                     {
@@ -35,7 +34,6 @@ namespace Ecs
                     }
                     entityReference.Entity = asteroidEntity;
 
-                    // Debug.Log($"Asteroid {j} material: {asteroidComponent.materials}");
                 }
             }
         }

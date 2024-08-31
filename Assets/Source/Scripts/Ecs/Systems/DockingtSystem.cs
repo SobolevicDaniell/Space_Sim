@@ -20,12 +20,12 @@ namespace Ecs
                 if (directionComponent.isDocking && !dockingComponent.isDocked && dockingComponent.readyToInteract)
                 {
                     Dock(ref dockingComponent, ref modelComponent, ref movebleComponent, ref directionComponent, ref uiComponent);
-                    directionComponent.isDocking = false;  // Сбрасываем флаг после успешного выполнения стыковки
+                    directionComponent.isDocking = false;
                 }
                 else if (directionComponent.isDocking && dockingComponent.isDocked)
                 {
                     Undock(ref dockingComponent, ref modelComponent, ref movebleComponent, ref uiComponent);
-                    directionComponent.isDocking = false;  // Сбрасываем флаг после успешного выполнения разъединения
+                    directionComponent.isDocking = false;
                 }
 
                 if (dockingComponent.isDocked)
@@ -42,8 +42,8 @@ namespace Ecs
             dockingComponent.isDocked = true;
             movebleComponent.rigidbody.isKinematic = true;
             dockingComponent.transferMenu.SetActive(true);
-            uiComponent.statMenu.SetActive(true); // Включаем statMenu при стыковке
-            uiComponent.otherStatMenu.SetActive(true); // Включаем statMenu при стыковке
+            uiComponent.statMenu.SetActive(true);
+            uiComponent.otherStatMenu.SetActive(true); 
             uiComponent.dockText.text = "Для отстыковки нажмите P";
             Debug.Log("Docked");
         }
@@ -54,8 +54,7 @@ namespace Ecs
             dockingComponent.isDocked = false;
             movebleComponent.rigidbody.isKinematic = false;
             dockingComponent.transferMenu.SetActive(false);
-            // uiComponent.statMenu.SetActive(false); // Выключаем statMenu при разъединении
-            uiComponent.otherStatMenu.SetActive(false); // Выключаем statMenu при разъединении
+            uiComponent.otherStatMenu.SetActive(false);
             Debug.Log("Undocked");
         }
     }
