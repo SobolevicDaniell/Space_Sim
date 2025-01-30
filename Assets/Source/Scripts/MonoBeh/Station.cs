@@ -89,7 +89,7 @@ public class Station : MonoBehaviour, IEntityReady
 
         modelComponent.modelTransform = station.transform;
         playerTagComponent.IsControlledByPlayer = isControlledByPlayer;
-        cameraComponent.cameras = cameras;
+        cameraComponent.camerasPosition = cameras;
         directionComponent.isDocking = false;
 
         movebleComponent.rigidbody = stationRigidbody;

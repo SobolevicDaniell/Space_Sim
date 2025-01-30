@@ -1,3 +1,4 @@
+using System;
 using Leopotam.Ecs;
 using UnityEngine;
 
@@ -5,15 +6,18 @@ namespace Ecs
 {
     sealed class InputSystem : IEcsRunSystem
     {
+        private readonly EcsWorld _world = null;
         private readonly EcsFilter<PlayerTagComponent, DirectionComponent, StabilizationComponent, FuelProductionComponent> inputFilter = null;
 
-        private float _moveX;
-        private float _moveY;
+        private const float DEAD_ZONE = 0.4f; // Значение мёртвой зоны
+
+        private Vector2 _moveX;
+        private Vector2 _moveY;
         private float _moveZ;
 
         private float _roll;
-        private float _pitch;
-        private float _yaw;
+        private Vector2 _pitch;
+        private Vector2 _yaw;
 
         private bool _isStabilizzation = false;
         private bool _isLazerOn;
@@ -22,6 +26,9 @@ namespace Ecs
 
         private bool _isFuelProduction;
 
+        public event Action SwitchControl;
+        public event Action SwitchCamera;
+        
         public void Run()
         {
             SetDirection();
@@ -35,8 +42,8 @@ namespace Ecs
                 ref var directionComponent = ref inputFilter.Get2(i);
                 ref var direction = ref directionComponent.Direction;
 
-                direction.x = _moveX;
-                direction.y = _moveY;
+                direction.x = _moveX.x;
+                direction.y = _moveY.y;
                 direction.z = _moveZ;
 
                 ref var Rroll = ref directionComponent.roll;
@@ -51,73 +58,82 @@ namespace Ecs
                 _isFuelProduction = fuelComponent.isProductionFuel;
 
                 Rroll = _roll;
-                Rpitch = _pitch;
-                Ryaw = _yaw;
+                Rpitch = _pitch.y;
+                Ryaw = _yaw.x;
 
                 IsStabilization = _isStabilizzation;
 
                 _isLazerOn = directionComponent.isLazerOn;
-                if (Input.GetKeyDown(KeyCode.F))
+                if (OVRInput.GetDown(OVRInput.Button.Two)) // Кнопка A
                 {
                     _isLazerOn = !_isLazerOn;
                 }
                 directionComponent.isLazerOn = _isLazerOn;
 
-                if (Input.GetKeyDown(KeyCode.P))
-                {
-                    
-                    directionComponent.isDocking = true;
-                }
-                else
-                {
-                    directionComponent.isDocking = false;
-                }
+                directionComponent.isDocking = OVRInput.GetDown(OVRInput.Button.Three); // Кнопка B
 
-                if (Input.GetKeyDown(KeyCode.G))
-                {
-                    fuelComponent.isProductionFuel = !_isFuelProduction;
-                }
-                
-                
-                if (Input.GetKeyDown(KeyCode.Tab))
-                {
-                    _isSwitchingControl = true;
-                }
-                else
-                {
-                    _isSwitchingControl = false;
-                }
-                directionComponent.isSwitchingControl = _isSwitchingControl;
+                // if (OVRInput.GetDown(OVRInput.Button.Four)) // Кнопка X
+                // {
+                //     fuelComponent.isProductionFuel = !_isFuelProduction;
+                // }
 
-                if (Input.GetKeyDown(KeyCode.C))
+                // directionComponent.isSwitchingControl = OVRInput.GetDown(OVRInput.Button.Start);
+                if (OVRInput.GetDown(OVRInput.Button.Four) || Input.GetKeyDown(KeyCode.F))
                 {
-                    _isSwitchingCamera = true;
+                    // SwitchControl?.Invoke();
+                    var entity =_world.NewEntity();
+                    entity.Get<EventControlSwitch>().eventControlSwitch = true;
                 }
-                else
+                if (OVRInput.GetDown(OVRInput.Button.Three) || Input.GetKeyDown(KeyCode.R))
                 {
-                    _isSwitchingCamera = false;
+                    Debug.Log("SwitchCamera вызван");
+                    // SwitchCamera?.Invoke();
+
+                    var entity =_world.NewEntity();
+                    entity.Get<EventCameraSwitch>().eventCameraSwitch = true;
                 }
-                directionComponent.isSwitchingCamera = _isSwitchingCamera;
+                // directionComponent.isSwitchingCamera = OVRInput.GetDown(OVRInput.Button.Three); // Кнопка Y
+                // if (Input.GetKeyUp(KeyCode.E))
+                // {
+                //     Debug.Log("Создаем событие TestEvent!");
+
+                //     var entity = _world.NewEntity();
+                //     entity.Get<TestEventComponent>().testEvent = true;
+                // }
             }
         }
 
         private void SetDirection()
         {
-            _moveX = Input.GetAxis("Horizontal");
-            _moveY = Input.GetAxis("Vertical");
-            _moveZ = Input.GetAxis("AxesZ");
+            _moveX = ApplyDeadZone(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick)); // Левый стик
+            _moveY = ApplyDeadZone(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick)); // Левый стик
+            _moveZ = ApplyDeadZone(OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) - OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger)); // Триггеры
 
-            _roll = Input.GetAxis("Roll");
-            _pitch = Input.GetAxis("Pitch");
-            _yaw = Input.GetAxis("Yaw");
+            // Управление ориентацией
+            _roll = ApplyDeadZone(OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) - OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger));
+            _pitch = ApplyDeadZone(OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick)); // Правый стик
+            _yaw = ApplyDeadZone(OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick)); // Правый стик
         }
 
         private void SetStabilization()
         {
-            if (Input.GetKeyDown(KeyCode.BackQuote))
+            if (OVRInput.GetDown(OVRInput.Button.One)) // Кнопка A
             {
                 _isStabilizzation = !_isStabilizzation;
             }
+        }
+
+        private float ApplyDeadZone(float value)
+        {
+            return Mathf.Abs(value) > DEAD_ZONE ? value : 0f;
+        }
+
+        private Vector2 ApplyDeadZone(Vector2 value)
+        {
+            return new Vector2(
+                Mathf.Abs(value.x) > DEAD_ZONE ? value.x : 0f,
+                Mathf.Abs(value.y) > DEAD_ZONE ? value.y : 0f
+            );
         }
     }
 }

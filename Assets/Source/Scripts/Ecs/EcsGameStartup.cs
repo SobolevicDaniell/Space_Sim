@@ -8,10 +8,15 @@ namespace Ecs
     {
         private EcsWorld _world;
         private EcsSystems _systems;
+        private InputSystem _inputSystem;
+        [SerializeField] private SceneData _scaneData;
+
 
         private void Awake()
         {
             _world = new EcsWorld();
+            // _inputSystem = new InputSystem();
+            // _scaneData = new SceneData();
         }
 
         private void Start()
@@ -34,7 +39,7 @@ namespace Ecs
         {
             _systems
                 .Add(new InputSystem())
-                .Add(new CameraSystem())
+                .Add(new CameraSystem(_scaneData))
                 .Add(new MovementSystem())
                 .Add(new StabilizationSystem())
                 .Add(new ParticleSrabilizationSystem())
@@ -46,6 +51,7 @@ namespace Ecs
                 .Add(new RestartSystem())
                 .Add(new DockingSystem())
                 .Add(new FuelProductionSystem())
+                // .Add(new TestEventSystem())
                 ;
         }
 

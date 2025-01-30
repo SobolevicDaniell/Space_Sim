@@ -6,6 +6,8 @@ namespace Ecs
     [Serializable]
     public struct CameraComponent
     {
-        public GameObject[] cameras;
+        public GameObject[] camerasPosition;
+        public int currentCameraIndex;
+        public bool isFirstTime;
     }
 }

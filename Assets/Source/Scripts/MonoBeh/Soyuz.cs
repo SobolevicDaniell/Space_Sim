@@ -12,7 +12,7 @@ public class Soyuz : MonoBehaviour, IEntityReady
     private EcsWorld _world;
     private EcsEntity _soyuzEntity;
     
-    [SerializeField] public GameObject[] cameras;
+    [SerializeField] public GameObject[] camerasPosition;
 
     [SerializeField] private GameObject soyuz;
     [SerializeField] private Rigidbody soyuzRigidbody;
@@ -113,7 +113,8 @@ public class Soyuz : MonoBehaviour, IEntityReady
 
         modelComponent.modelTransform = soyuz.transform;
         playerTagComponent.IsControlledByPlayer = IsControlledByPlayer;
-        cameraComponent.cameras = cameras;
+        cameraComponent.camerasPosition = camerasPosition;
+        cameraComponent.isFirstTime = true;
         directionComponent.isDocking = false;
 
         movebleComponent.rigidbody = soyuzRigidbody;

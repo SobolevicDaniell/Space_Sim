@@ -4,6 +4,6 @@ namespace Ecs
 {
     public class SceneData : MonoBehaviour
     {
-        public GameObject playerSpawnPoint;
+        public GameObject mainCamera;
     }
 }

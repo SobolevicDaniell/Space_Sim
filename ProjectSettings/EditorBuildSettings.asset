@@ -5,16 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu.unity
     guid: add3d32217cce2c4f8e9ae4625e8c7ed
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Levels.unity
     guid: 189e7b05768a95a44a1d901529f3b418
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Options.unity
     guid: 0e6e61d0881b50840b0f2e333660e19c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Levels/Training.unity
     guid: dd9da0c3d86a5f44d93adc65afb6e814
   - enabled: 1
@@ -32,4 +32,8 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Levels/FreeFly.unity
     guid: 7284452bf2ce2524b9775fb67b7326c6
-  m_configObjects: {}
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 7515c501d04372946a6bd9c53a35ac1e, type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: d08105a148a737f42a5670ce59c32f28, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: d6c57e92debe2654aa1b10da5917a758, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 893dcea0f84ecf846bc7e2a39d0df499, type: 2}

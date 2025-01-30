@@ -1,92 +1,39 @@
+using System;
 using Leopotam.Ecs;
 using UnityEngine;
 
 namespace Ecs
 {
-    sealed class ControlSwitchSystem : IEcsInitSystem, IEcsRunSystem
+    sealed class ControlSwitchSystem : IEcsRunSystem
     {
-        private readonly EcsFilter<CameraComponent, PlayerTagComponent, DirectionComponent, UIComponent/*, DockingComponent*/> controlSwitchFilter = null;
-        private int currentPlayerIndex;
-
-        public void Init()
-        {
-
-            for (int i = 0; i < controlSwitchFilter.GetEntitiesCount(); i++)
-            {
-                ref var playerTagComponent = ref controlSwitchFilter.Get2(i);
-                if (playerTagComponent.IsControlledByPlayer)
-                {
-                    currentPlayerIndex = i;
-                    ActivateCamera(ref controlSwitchFilter.Get1(i), true);
-                    ActivateStatMenu(ref controlSwitchFilter.Get4(i), true);
-                }
-                else
-                {
-                    ActivateCamera(ref controlSwitchFilter.Get1(i), false);
-                    ActivateStatMenu(ref controlSwitchFilter.Get4(i), false);
-                }
-            }
-        }
+        private readonly EcsWorld _world = null;
+        private readonly EcsFilter<PlayerTagComponent> controlFilter = null;
+        private readonly EcsFilter<EventControlSwitch> eventFilter = null;
+        private int _currentPlayerIndex = 0;
 
         public void Run()
         {
-            foreach (var i in controlSwitchFilter)
+            foreach (var eventIndex in eventFilter)
             {
-                ref var directionComponent = ref controlSwitchFilter.Get3(i);
-
-                if (directionComponent.isSwitchingControl)
+                if (controlFilter.GetEntitiesCount() > 0)
                 {
-                    SwitchControl();
-                    directionComponent.isSwitchingControl = false;
-                    break;
+                    ref var currentPlayerTagComponent = ref controlFilter.Get1(_currentPlayerIndex);
+                    currentPlayerTagComponent.IsControlledByPlayer = false;
+
+                    _currentPlayerIndex = (_currentPlayerIndex + 1) % controlFilter.GetEntitiesCount();
+
+                    ref var nextPlayerTagComponent = ref controlFilter.Get1(_currentPlayerIndex);
+                    nextPlayerTagComponent.IsControlledByPlayer = true;
+
+                    Debug.Log($"Управление переключено на сущность с индексом {_currentPlayerIndex}");
+
+                    var entity = _world.NewEntity();
+                    ref var cameraOnEvent = ref entity.Get<EventCameraOn>();
+                    cameraOnEvent.EntityId = _currentPlayerIndex; // Устанавливаем, если нужно
                 }
-            }
-        }
 
-        private void SwitchControl()
-        {
-            if (controlSwitchFilter.GetEntitiesCount() == 0)
-            {
-                return;
-            }
-
-            ref var currentPlayerTagComponent = ref controlSwitchFilter.Get2(currentPlayerIndex);
-            ref var currentCameraComponent = ref controlSwitchFilter.Get1(currentPlayerIndex);
-            ref var currentUIComponent = ref controlSwitchFilter.Get4(currentPlayerIndex);
-
-            currentPlayerTagComponent.IsControlledByPlayer = false;
-            ActivateCamera(ref currentCameraComponent, false);
-            
-            ActivateStatMenu(ref currentUIComponent, false);
-            
-
-            currentPlayerIndex = (currentPlayerIndex + 1) % controlSwitchFilter.GetEntitiesCount();
-
-            ref var nextPlayerTagComponent = ref controlSwitchFilter.Get2(currentPlayerIndex);
-            ref var nextCameraComponent = ref controlSwitchFilter.Get1(currentPlayerIndex);
-            ref var nextUIComponent = ref controlSwitchFilter.Get4(currentPlayerIndex);
-
-            nextPlayerTagComponent.IsControlledByPlayer = true;
-            ActivateCamera(ref nextCameraComponent, true);
-            ActivateStatMenu(ref nextUIComponent, true);
-        }
-
-        private void ActivateCamera(ref CameraComponent cameraComponent, bool isActive)
-        {
-            if (cameraComponent.cameras != null && cameraComponent.cameras.Length > 0)
-            {
-                for (int i = 0; i < cameraComponent.cameras.Length; i++)
-                {
-                    cameraComponent.cameras[i].SetActive(isActive && i == 0);
-                }
-            }
-        }
-
-        private void ActivateStatMenu(ref UIComponent uiComponent, bool isActive)
-        {
-            if (uiComponent.statMenu != null)
-            {
-                uiComponent.statMenu.SetActive(isActive);
+                ref var eventEntity = ref eventFilter.GetEntity(eventIndex);
+                eventEntity.Del<EventControlSwitch>();
             }
         }
     }
