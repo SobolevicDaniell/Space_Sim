@@ -32,4 +32,14 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Levels/FreeFly.unity
     guid: 7284452bf2ce2524b9775fb67b7326c6
+<<<<<<< Updated upstream
   m_configObjects: {}
+=======
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 7515c501d04372946a6bd9c53a35ac1e, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: 03cd5c589a0c2744eb71d6921e68ccac, type: 2}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: bb8e5e6af00413e4cba7cc645b2040c8, type: 3}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: d08105a148a737f42a5670ce59c32f28, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: d6c57e92debe2654aa1b10da5917a758, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 6d952656b0ad6334195084910df43e34, type: 2}
+>>>>>>> Stashed changes

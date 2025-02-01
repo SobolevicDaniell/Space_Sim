@@ -137,7 +137,12 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 0.1
+<<<<<<< Updated upstream
   preloadedAssets: []
+=======
+  preloadedAssets:
+  - {fileID: 0}
+>>>>>>> Stashed changes
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -514,7 +519,11 @@ PlayerSettings:
   m_BuildTargetGraphicsAPIs:
   - m_BuildTarget: AndroidPlayer
     m_APIs: 150000000b000000
+<<<<<<< Updated upstream
     m_Automatic: 1
+=======
+    m_Automatic: 0
+>>>>>>> Stashed changes
   - m_BuildTarget: iOSSupport
     m_APIs: 10000000
     m_Automatic: 1
@@ -907,7 +916,7 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  activeInputHandler: 0
+  activeInputHandler: 2
   windowsGamepadBackendHint: 0
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0
